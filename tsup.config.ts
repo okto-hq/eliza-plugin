@@ -15,7 +15,8 @@ export default defineConfig({
         "google-auth-library",
         "open",
         "@okto_web3/core-js-sdk",
-        "ethers"
+        "ethers",
+        "viem"
     ],
     platform: "node",
     target: "node23",
