@@ -19,7 +19,7 @@
         "dist"
     ],
     "dependencies": {
-        "@elizaos/core": "workspace:*",
+        "@elizaos/core": "0.1.9",
         "@okto_web3/core-js-sdk": "0.0.0",
         "axios": "^1.7.9",
         "ethers": "5.7.2",
@@ -40,5 +40,35 @@
         "lint": "eslint --fix  --cache .",
         "test": "vitest run",
         "test:watch": "vitest"
+    },
+    "agentConfig": {
+        "pluginType": "elizaos:client:1.0.0",
+        "pluginParameters": {
+            "OKTO_ENVIRONMENT": {
+                "type": "string",
+                "description": "Okto environment (sandbox, staging, production)",
+                "default": "sandbox"
+            },
+            "OKTO_CLIENT_PRIVATE_KEY": {
+                "type": "string",
+                "description": "Client private key provided by Okto",
+                "required": true
+            },
+            "OKTO_CLIENT_SWA": {
+                "type": "string", 
+                "description": "Client SWA provided by Okto",
+                "required": true
+            },
+            "GOOGLE_CLIENT_ID": {
+                "type": "string",
+                "description": "Google OAuth client ID from Google Cloud Console",
+                "required": true
+            },
+            "GOOGLE_CLIENT_SECRET": {
+                "type": "string",
+                "description": "Google OAuth client secret from Google Cloud Console",
+                "required": true
+            }
+        }
     }
 }
