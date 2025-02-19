@@ -1,0 +1,5 @@
+*
+
+!dist/**
+!package.json
+!tsup.config.ts
