@@ -19,8 +19,8 @@
         "dist"
     ],
     "dependencies": {
-        "@elizaos/core": "0.2.0",
-        "@okto_web3/core-js-sdk": "0.0.0",
+        "@elizaos/core": "0.1.9",
+        "@okto_web3/core-js-sdk": "0.2.1",
         "axios": "^1.7.9",
         "ethers": "5.7.2",
         "google-auth-library": "^9.15.0",
