@@ -1,5 +1,5 @@
 {
-    "name": "@okto_web3/plugin-okto",
+    "name": "@okto_web3/eliza-plugin",
     "version": "0.0.0",
     "type": "module",
     "main": "dist/index.js",
@@ -19,7 +19,7 @@
         "dist"
     ],
     "dependencies": {
-        "@elizaos/core": "0.1.9",
+        "@elizaos/core": "0.2.0",
         "@okto_web3/core-js-sdk": "0.0.0",
         "axios": "^1.7.9",
         "ethers": "5.7.2",
