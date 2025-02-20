@@ -2,6 +2,7 @@ import {
   Plugin,
   Action,
   Service,
+  elizaLogger,
 } from "@elizaos/core";
 import { getPortfolioAction } from "./actions/getPortfolioAction.ts";
 import { getAccountAction } from "./actions/getAccountAction.ts";
@@ -15,12 +16,13 @@ import { nftTransferAction } from "./actions/nftTransferAction.ts";
 import { OktoService } from "./services/oktoService.ts";
 import { swapTokensAction } from "./actions/swapAction.ts";
 
-export class OktoPlugin implements Plugin {
+class OktoPlugin implements Plugin {
   readonly name: string = "okto";
   readonly description: string = "Interface web3 with Okto API";
   public oktoService: OktoService = new OktoService();
 
   constructor() {
+    elizaLogger.info("initiailizing okto plugin")
   }
 
   actions: Action[] = [
@@ -39,5 +41,4 @@ export class OktoPlugin implements Plugin {
   services: Service[] = [this.oktoService];
 }
 
-export default new OktoPlugin();
-export { OktoService };
+export { OktoPlugin, OktoService };
