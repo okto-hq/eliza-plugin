@@ -72,9 +72,25 @@ GOOGLE_CLIENT_SECRET=            # Required. Get from https://console.cloud.goog
 ## Usage
 
 ```typescript
-import OktoPlugin from "@okto_web3/eliza-plugin";
-
-runtime.registerPlugin(OktoPlugin);
+import {OktoPlugin} from "@okto_web3/eliza-plugin";
+const oktoPlugin = new OktoPlugin()
+  return new AgentRuntime({
+    databaseAdapter: db,
+    token,
+    modelProvider: character.modelProvider,
+    evaluators: [],
+    character,
+    plugins: [
+      bootstrapPlugin,
+      nodePlugin,
+      oktoPlugin,
+    ].filter(Boolean),
+    providers: [],
+    actions: [],
+    services: [oktoPlugin.oktoService],
+    managers: [],
+    cacheManager: cache,
+  });
 ```
 
 ### Available Actions
