@@ -1,4 +1,4 @@
-# @okto_web3/plugin-okto
+# @okto_web3/eliza-plugin
 
 A comprehensive integration plugin for ElizaOS that provides access to Okto's various APIs and services, enabling seamless Web3 interactions.
 
@@ -42,7 +42,7 @@ A comprehensive integration plugin for ElizaOS that provides access to Okto's va
 ## Installation
 
 ```bash
-npm install @okto_web3/plugin-okto
+npm install @okto_web3/eliza-plugin
 ```
 
 ## Configuration
@@ -72,7 +72,7 @@ GOOGLE_CLIENT_SECRET=            # Required. Get from https://console.cloud.goog
 ## Usage
 
 ```typescript
-import OktoPlugin from "@okto_web3/plugin-okto";
+import OktoPlugin from "@okto_web3/eliza-plugin";
 
 runtime.registerPlugin(OktoPlugin);
 ```
