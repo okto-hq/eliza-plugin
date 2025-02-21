@@ -8,15 +8,18 @@ import {
 import { OktoClient, OktoClientConfig } from "@okto_web3/core-js-sdk";
 import { getGoogleIdToken } from "../google.ts";
 import { getPortfolio, getAccount, getChains, getNftCollections, getOrdersHistory, getPortfolioNFT, getTokens } from "@okto_web3/core-js-sdk/explorer";
-import { GetSupportedNetworksResponseData, Order, UserNFTBalance, UserPortfolioData } from "@okto_web3/core-js-sdk/types";
+import { GetSupportedNetworksResponseData, Token, Order, UserNFTBalance, UserPortfolioData } from "@okto_web3/core-js-sdk/types";
 import { tokenTransfer, nftTransfer, evmRawTransaction } from "@okto_web3/core-js-sdk/userop";
-import { NFTTransferIntentParams, RawTransactionIntentParams, TokenTransferIntentParams, Token, Wallet } from "../types.ts";
+import { NFTTransferIntentParams, RawTransactionIntentParams, TokenTransferIntentParams, Wallet } from "../types.ts";
 import { Address } from "viem";
 import { ethers } from "ethers";
+import { DEFAULT_CHAINS, DEFAULT_TOKENS } from "../constants.ts";
 
 export class OktoService extends Service {
     static serviceType: ServiceType = ServiceType.TRANSCRIPTION;
     private oktoClient: OktoClient;
+    public supportedChains: GetSupportedNetworksResponseData[] = DEFAULT_CHAINS;
+    public supportedTokens: Token[] = DEFAULT_TOKENS;
 
     initialize(runtime: IAgentRuntime): Promise<void> {
         const environment = settings.OKTO_ENVIRONMENT || "sandbox";
@@ -44,13 +47,18 @@ export class OktoService extends Service {
         }
         this.oktoClient = new OktoClient(clientConfig);
         
-        getGoogleIdToken(googleClientId, googleClientSecret).then(async (tokens: any) => {
+        getGoogleIdToken(googleClientId, googleClientSecret).then(async (googleTokens: any) => {
             try {
                 const user = await this.oktoClient.loginUsingOAuth({
-                idToken: tokens.id_token,
-                provider: 'google',
+                  idToken: googleTokens.id_token,
+                  provider: 'google',
                 });
                 elizaLogger.info("Okto Authenticateion Success", JSON.stringify(user, null, 2));
+                
+                const [chains, tokens] = await Promise.all([this.getChains(), this.getTokens()]);
+                this.supportedChains = chains;
+                this.supportedTokens = tokens;
+                
             } catch (error: any) {
                 elizaLogger.error("Okto Authenticateion Error", error.message);
             }

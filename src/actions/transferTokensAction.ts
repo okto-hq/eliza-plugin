@@ -5,13 +5,12 @@ import { getTokenAddress, handleApiError, validateSearchQuery } from "../utils.t
 import { OktoPlugin } from "../index.ts";
 import { TokenTransferIntentParams } from "../types.ts";
 import { Address } from "@okto_web3/core-js-sdk/types";
-import { NETWORK_CHAIN_INFO } from "../constants.ts";
 
 export const TransferSchema = z.object({
-    network: z.string().toUpperCase(),
+    caipId: z.string(),
     receivingAddress: z.string(),
     transferAmount: z.number(),
-    assetId: z.string().toUpperCase(),
+    tokenAddress: z.string(),
 });
 
 
@@ -78,7 +77,7 @@ export const transferTokensAction = (plugin: OktoPlugin): Action => {
 
           const context = composeContext({
               state,
-              template: transferTemplate,
+              template: transferTemplate(plugin.oktoService.supportedChains, plugin.oktoService.supportedTokens),
           });
 
           const transferDetails = await generateObject({
@@ -91,25 +90,6 @@ export const transferTokensAction = (plugin: OktoPlugin): Action => {
 
           const transferObject = transferDetails.object as z.infer<typeof TransferSchema>;
           elizaLogger.info("OKTO Token Transfer Details: ", transferObject)
-          let tokenAddress = ""
-          try {
-            // TODO: get token address from okto
-            tokenAddress = getTokenAddress(transferObject.network, transferObject.assetId)
-          } catch (error) {
-            elizaLogger.error("Error getting token address: ", error)
-            callback?.(
-                {
-                    text: "Invalid token symbol. Please check the inputs.",
-                },
-                []
-            )
-          }
-          const data ={
-                "network_name": transferObject.network,
-                "token_address": tokenAddress,
-                "recipient_address": transferObject.receivingAddress,
-                "quantity": transferObject.transferAmount.toString()
-          }
 
           if (!isTransferContent(transferDetails.object)) {
                 callback?.(
@@ -122,21 +102,16 @@ export const transferTokensAction = (plugin: OktoPlugin): Action => {
             }
 
           try {
-            const chainInfo = NETWORK_CHAIN_INFO[data.network_name];
-            if (!chainInfo) {
-              callback?.({ text: `Unsupported network: ${data.network_name}` }, []);
-              return;
-            }
             const tokenTransferIntentParams: TokenTransferIntentParams = {
-              amount: Number(data.quantity),
-              recipient: data.recipient_address as Address,
-              token: data.token_address as Address | '',
-              caip2Id: chainInfo.CAIP_ID
+              amount: transferObject.transferAmount,
+              recipient: transferObject.receivingAddress as Address,
+              token: transferObject.tokenAddress as Address | '',
+              caip2Id: transferObject.caipId
             };
             const orderid = await plugin.oktoService.tokenTransfer(tokenTransferIntentParams);
 
             const resultStr = `✅ Okto Transfer intented submitted.
-Submitted transfer of ${data.quantity} ${transferObject.assetId} to ${data.recipient_address} on ${data.network_name}
+Submitted transfer of ${tokenTransferIntentParams.amount} ${transferObject.tokenAddress} to ${transferObject.receivingAddress} on ${transferObject.caipId}
 Order ID: ${orderid}
 `
             elizaLogger.info(resultStr)

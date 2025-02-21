@@ -3,7 +3,6 @@ import { swapTemplate } from "../templates.ts";
 import { z } from "zod";
 import { handleApiError, validateSearchQuery } from "../utils.ts";
 import { OktoPlugin } from "../index.ts";
-import { NETWORK_CHAIN_INFO } from "../constants.ts";
 
 export const SwapSchema = z.object({
     network: z.string().toUpperCase(),
@@ -95,11 +94,6 @@ export const swapTokensAction = (plugin: OktoPlugin): Action => {
           const swapDetails = swapDetailsResult.object as z.infer<typeof SwapSchema>;
           elizaLogger.info("OKTO Swap Details: ", swapDetails);
 
-          const chainInfo = NETWORK_CHAIN_INFO[swapDetails.network];
-          if (!chainInfo) {
-              callback?.({ text: `Unsupported network: ${swapDetails.network}` }, []);
-              return;
-          }
           
           const tokenSwapIntentParams = {
               isNative: true,
@@ -109,7 +103,7 @@ export const swapTokensAction = (plugin: OktoPlugin): Action => {
               router: swapDetails.router,
               tokenIn: swapDetails.tokenIn,
               tokenOut: swapDetails.tokenOut,
-              chain: chainInfo.CAIP_ID
+              chain: ""
           };
 
           const orderid = await plugin.oktoService.tokenSwap(tokenSwapIntentParams);

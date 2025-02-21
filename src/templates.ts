@@ -1,24 +1,27 @@
-import { SUPPORTED_NETWORKS, SUPPORTED_TOKENS } from "./constants.ts";
+import { GetSupportedNetworksResponseData, Token } from "@okto_web3/core-js-sdk/types";
+import { DEFAULT_CHAINS } from "./constants.ts";
 
-function getAllowedNetworks() {
-  return SUPPORTED_NETWORKS.map(network => `readonly ${network}: "${network}";`).join("\n\t");
+function getChains(supportedChains: GetSupportedNetworksResponseData[]): string {
+  return supportedChains.map(chain => `readonly NetworkName: ${chain.networkName}, CaipId: ${chain.caipId}` ).join("\n\t")
 }
 
-function getAllowedAssets() {
-  return SUPPORTED_TOKENS.map(token => `readonly ${token}: "${token}";`).join("\n\t");
+function getTokens(supportedTokens: Token[]): string {
+  return supportedTokens.map(token =>  `readonly TokenSymbol: ${token.symbol}, CaipId: ${token.caipId}, Address: ${token.address}` ).join("\n\t")
 }
 
-export const transferTemplate = `
+export function transferTemplate(supportedChains: GetSupportedNetworksResponseData[], supportedTokens: Token[]) {
+
+  const transferTemplate = `
 Extract the following details from the most recent message for processing token transfer using the Okto SDK:
 - **receivingAddress** (string): The address to transfer the tokens to.
 - **transferAmount** (number): The amount to transfer to the address. This can be a decimal number as well.
-- **assetId** (string): The asset ID to transfer (e.g., ETH, BTC).
-    static assets: {
-       ${getAllowedAssets()}
+- **tokenAddress** (string): The token address to transfer
+    static tokens: {
+       ${getTokens(supportedTokens)}
     };
-- **network** (string): The blockchain network to use. Allowed values are:
+- **caipId** (string): The caipId for blockchain network to use. Allowed values are:
     static networks: {
-       ${getAllowedNetworks()}
+       ${getChains(supportedChains)}
     };
 
 Only Provide the details in the following JSON format, focusing exclusively on the most recent message:
@@ -33,6 +36,11 @@ Only Provide the details in the following JSON format, focusing exclusively on t
 Here are the recent user messages for context (focus on the last message):
 {{recentMessages}}
 `;
+
+  return transferTemplate;
+}
+
+
 
 export const nftTransferTemplate = `
 Extract the following details from the most recent message for processing NFT transfer using the Okto SDK:
@@ -68,7 +76,7 @@ Extract the following details from the most recent message for processing token 
 - **minAmountOut** (number): The minimum amount of tokenOut expected (in smallest unit).
 - **network** (string): The blockchain network for the transaction. Allowed values are:
     static networks: {
-       ${getAllowedNetworks()}
+       ${getChains(DEFAULT_CHAINS)}
     };
 
 Only Provide the details in the following JSON format, focusing exclusively on the most recent message:
