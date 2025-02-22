@@ -35,7 +35,7 @@ class OktoPlugin implements Plugin {
     getTokensAction(this),
     transferTokensAction(this),
     nftTransferAction(this),
-    swapTokensAction(this),
+    //swapTokensAction(this),
   ];
 
   services: Service[] = [this.oktoService];

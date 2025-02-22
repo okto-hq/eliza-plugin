@@ -104,7 +104,7 @@ const oktoPlugin = new OktoPlugin()
 - `OKTO_GET_TOKENS` - Get supported tokens
 - `OKTO_TRANSFER` - Transfer tokens
 - `OKTO_NFT_TRANSFER` - Transfer NFTs
-- `OKTO_SWAP` - Swap tokens using DEX
+- `OKTO_SWAP` - Swap tokens using DEX (Experimental)
 
 ## Contributing
 
