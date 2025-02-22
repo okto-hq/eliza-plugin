@@ -44,15 +44,19 @@ Here are the recent user messages for context (focus on the last message):
 }
 
 
+export function nftTransferTemplate(supportedChains: GetSupportedNetworksResponseData[]) {
 
-export const nftTransferTemplate = `
+  const nftTransferTemplate = `
 Extract the following details from the most recent message for processing NFT transfer using the Okto SDK:
 - **recipientWalletAddress** (string): The wallet address to which the NFT should be transferred.
 - **nftId** (string): The unique identifier of the NFT.
 - **collectionAddress** (string): The contract address of the NFT collection.
 - **amount** (number): The quantity of NFTs to transfer (usually 1 for ERC721, but may vary for ERC1155).
 - **nftType** (string): Either 'ERC721' or 'ERC1155'.
-- **caip2Id** (string): The CAIP-2 identifier for the blockchain network (e.g., "eip155:1" for Ethereum mainnet).
+- **caipId** (string): The caipId for blockchain network to use. Allowed values are:
+    static networks: {
+       ${getChains(supportedChains)}
+    };
 
 Only provide the details in the following JSON format, focusing exclusively on the most recent message:
 
@@ -68,6 +72,9 @@ Only provide the details in the following JSON format, focusing exclusively on t
 Here are the recent user messages for context (focus on the last message):
 {{recentMessages}}
 `;
+  elizaLogger.debug(nftTransferTemplate)
+  return nftTransferTemplate;
+}
 
 export const swapTemplate = `
 Extract the following details from the most recent message for processing token swap using the Okto SDK:

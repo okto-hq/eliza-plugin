@@ -1,7 +1,7 @@
 import { Action, composeContext, elizaLogger, generateObject, HandlerCallback, IAgentRuntime, Memory, ModelClass, State } from "@elizaos/core";
 import { nftTransferTemplate } from "../templates.ts";
 import { z } from "zod";
-import { getTokenAddress, handleApiError, validateSearchQuery } from "../utils.ts";
+import { handleApiError, validateSearchQuery } from "../utils.ts";
 import { OktoPlugin } from "../index.ts";
 import { NFTTransferIntentParams } from "../types.ts";
 import { Address } from "@okto_web3/core-js-sdk/types";
@@ -83,7 +83,7 @@ export const nftTransferAction = (plugin: OktoPlugin): Action => {
 
           const context = composeContext({
               state,
-              template: nftTransferTemplate,
+              template: nftTransferTemplate(plugin.oktoService.supportedChains),
           });
 
           const transferDetails = await generateObject({
