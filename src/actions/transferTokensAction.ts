@@ -1,7 +1,7 @@
 import { Action, composeContext, elizaLogger, generateObject, HandlerCallback, IAgentRuntime, Memory, ModelClass, State } from "@elizaos/core";
 import { transferTemplate } from "../templates.ts";
 import { z } from "zod";
-import { getTokenAddress, handleApiError, validateSearchQuery } from "../utils.ts";
+import { handleApiError, validateSearchQuery } from "../utils.ts";
 import { OktoPlugin } from "../index.ts";
 import { TokenTransferIntentParams } from "../types.ts";
 import { Address } from "@okto_web3/core-js-sdk/types";

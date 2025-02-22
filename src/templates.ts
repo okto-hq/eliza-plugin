@@ -1,5 +1,6 @@
 import { GetSupportedNetworksResponseData, Token } from "@okto_web3/core-js-sdk/types";
 import { DEFAULT_CHAINS } from "./constants.ts";
+import { elizaLogger } from "@elizaos/core";
 
 function getChains(supportedChains: GetSupportedNetworksResponseData[]): string {
   return supportedChains.map(chain => `readonly NetworkName: ${chain.networkName}, CaipId: ${chain.caipId}` ).join("\n\t")
@@ -15,7 +16,7 @@ export function transferTemplate(supportedChains: GetSupportedNetworksResponseDa
 Extract the following details from the most recent message for processing token transfer using the Okto SDK:
 - **receivingAddress** (string): The address to transfer the tokens to.
 - **transferAmount** (number): The amount to transfer to the address. This can be a decimal number as well.
-- **tokenAddress** (string): The token address to transfer
+- **tokenAddress** (string): The token address to transfer. Note it can be empty string
     static tokens: {
        ${getTokens(supportedTokens)}
     };
@@ -29,13 +30,15 @@ Only Provide the details in the following JSON format, focusing exclusively on t
 {
     "receivingAddress": "<receiving_address>",
     "transferAmount": <amount>,
-    "assetId": "<asset_id>",
-    "network": "<network>"
+    "tokenAddress": "<asset_id>",
+    "caipId": "<network>"
 }
 
 Here are the recent user messages for context (focus on the last message):
 {{recentMessages}}
 `;
+
+  elizaLogger.debug(transferTemplate)
 
   return transferTemplate;
 }
