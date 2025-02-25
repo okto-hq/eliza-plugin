@@ -1,6 +1,20 @@
+<p align="center">
+  <img src="/images/logo.png" alt="Okto Logo">
+</p>
+
 # @okto_web3/eliza-plugin
 
 A comprehensive integration plugin for ElizaOS that provides access to Okto's various APIs and services, enabling seamless Web3 interactions.
+
+## Documentation
+
+For comprehensive documentation, please visit the [Okto Eliza Plugin Documentation](https://docsv2.okto.tech/docs/okto-eliza-plugin).
+
+## Video Overview
+
+Watch the video overview of the plugin:
+
+[![Loom Video](images/screenshots/screenshot3.png)](https://www.loom.com/share/2359e23e93944606a80ba82bcf39ee3b?sid=290b5627-1001-4d92-b760-aa9b2b77ae7a)
 
 ## Features
 
